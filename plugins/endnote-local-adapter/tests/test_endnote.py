@@ -175,8 +175,40 @@ def test_get_reference_and_list_attachments_resolve_pdf_path(
 
     assert detail["reference"]["title"] == "Magnetic order in layered materials"
     assert attachments["count"] == 1
-    assert attachments["attachments"][0]["exists"] is True
-    assert attachments["attachments"][0]["resolved_path"].endswith("1234567890/fixture.pdf")
+    attachment = attachments["attachments"][0]
+    detail_attachment = detail["attachments"][0]
+    resolved_path = Path(attachment["resolved_path"])
+    parent_path = resolved_path.parent
+
+    assert attachment["exists"] is True
+    assert attachment["resolved_path"].endswith("1234567890/fixture.pdf")
+    assert attachment["file_uri"] == resolved_path.as_uri()
+    assert attachment["file_uri"].startswith("file://")
+    assert "Fixture%20Library.Data" in attachment["file_uri"]
+    assert attachment["parent_path"] == str(parent_path)
+    assert attachment["parent_uri"] == parent_path.as_uri()
+    assert attachment["parent_uri"].startswith("file://")
+    assert attachment["markdown_link"] == f"[Open PDF](<{resolved_path}>)"
+    assert attachment["markdown_parent_link"] == f"[Show containing folder](<{parent_path}>)"
+    assert detail_attachment["markdown_link"] == attachment["markdown_link"]
+
+
+def test_attachment_links_make_relative_missing_paths_clickable(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    relative_path = Path("Missing Folder") / "missing paper.pdf"
+    absolute_path = relative_path.absolute()
+
+    links = endnote.attachment_links(relative_path)
+
+    assert absolute_path.exists() is False
+    assert links["file_uri"] == absolute_path.as_uri()
+    assert links["parent_path"] == str(absolute_path.parent)
+    assert links["parent_uri"] == absolute_path.parent.as_uri()
+    assert links["markdown_link"] == f"[Open PDF](<{absolute_path}>)"
+    assert links["markdown_parent_link"] == f"[Show containing folder](<{absolute_path.parent}>)"
 
 
 def test_search_pdf_full_text_uses_endnote_pdf_index(configured_library: Path) -> None:
@@ -221,6 +253,44 @@ def test_missing_library_path_fails_for_operations(
 
     with pytest.raises(endnote.EndNoteError, match="does not exist"):
         endnote.search_references("anything")
+
+
+def test_env_config_path_overrides_local_config(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    env_config_path = tmp_path / "env-config.json"
+    env_config_path.write_text(
+        json.dumps(
+            {
+                "defaultLibraryId": "env-library",
+                "libraries": [
+                    {
+                        "id": "env-library",
+                        "name": "Env Library",
+                        "path": str(tmp_path / "Env Library.enl"),
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv(endnote.CONFIG_ENV_VAR, str(env_config_path))
+
+    payload = endnote.list_libraries()
+
+    assert payload["config_path"] == str(env_config_path)
+    assert payload["default_library_id"] == "env-library"
+
+
+def test_env_config_path_must_exist(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv(endnote.CONFIG_ENV_VAR, str(tmp_path / "missing.json"))
+
+    with pytest.raises(endnote.EndNoteError, match=endnote.CONFIG_ENV_VAR):
+        endnote.list_libraries()
 
 
 def test_open_sqlite_readonly_rejects_writes(tmp_path: Path) -> None:

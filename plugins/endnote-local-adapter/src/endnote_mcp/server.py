@@ -50,13 +50,13 @@ def search_pdf_full_text(
 
 @mcp.tool()
 def get_reference(reference_id: int, library_id: str | None = None) -> dict[str, Any]:
-    """Return full metadata and attachment summaries for one EndNote reference."""
+    """Return full metadata and link-ready attachment summaries for one reference."""
     return endnote.get_reference(reference_id=reference_id, library_id=library_id)
 
 
 @mcp.tool()
 def list_attachments(reference_id: int, library_id: str | None = None) -> dict[str, Any]:
-    """List resolved attachment paths for one EndNote reference."""
+    """List resolved attachment paths, file URIs, and Markdown links."""
     return endnote.list_attachments(reference_id=reference_id, library_id=library_id)
 
 
@@ -82,4 +82,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

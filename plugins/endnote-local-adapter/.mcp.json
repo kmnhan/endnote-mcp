@@ -4,6 +4,7 @@
       "command": "uv",
       "args": [
         "run",
+        "--isolated",
         "endnote-mcp"
       ],
       "cwd": "."

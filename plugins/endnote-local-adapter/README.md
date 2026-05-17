@@ -37,9 +37,10 @@ Useful references:
    make the add fail before the marketplace is read.
 3. Install or enable `MCP Adapter for EndNote (Unofficial)`.
 4. Install `uv` if it is not already available on your machine.
-5. Copy `config/libraries.example.json` to `config/libraries.local.json`.
-6. Edit `config/libraries.local.json` so each `path` points to a local `.enl`
-   library that you are authorized to access.
+5. Copy `config/libraries.example.json` to
+   `~/.config/endnote-mcp/libraries.local.json`.
+6. Edit `~/.config/endnote-mcp/libraries.local.json` so each `path` points to a
+   local `.enl` library that you are authorized to access.
 
 ### Install from a local checkout
 
@@ -49,25 +50,37 @@ Useful references:
 4. In Codex, install or enable `MCP Adapter for EndNote (Unofficial)` from the
    local plugin marketplace. This repository declares it in
    `.agents/plugins/marketplace.json`.
-5. Copy `config/libraries.example.json` to `config/libraries.local.json`.
-6. Edit `config/libraries.local.json` so each `path` points to a local `.enl`
-   library that you are authorized to access.
+5. Copy `config/libraries.example.json` to
+   `~/.config/endnote-mcp/libraries.local.json`.
+6. Edit `~/.config/endnote-mcp/libraries.local.json` so each `path` points to a
+   local `.enl` library that you are authorized to access.
 
 For a home-local Codex install, copy this plugin directory to
 `~/plugins/endnote-local-adapter` and add a marketplace entry at
 `~/.agents/plugins/marketplace.json` whose `source.path` is
 `./plugins/endnote-local-adapter`.
 
+The adapter looks for configuration in this order:
+
+1. `ENDNOTE_MCP_CONFIG`, when set.
+2. Plugin-local `config/libraries.local.json`.
+3. `~/.config/endnote-mcp/libraries.local.json`.
+4. Plugin-local `config/libraries.example.json`.
+
 `libraries.local.json` is ignored by git so each user can keep their own
-absolute EndNote paths out of the repository.
+absolute EndNote paths out of the repository. Prefer the home config path for
+Codex plugin installs because plugin cache directories can be replaced.
 
 ## Tools
 
 - `list_libraries`: show configured libraries and whether their `.enl`, `.Data`, and PDF index paths exist.
 - `search_references`: search EndNote metadata fields in the `.enl` SQLite database.
 - `search_pdf_full_text`: search EndNote's existing PDF text index at `<library>.Data/sdb/pdb.eni`.
-- `get_reference`: return full metadata and attachment summaries for one reference.
-- `list_attachments`: resolve EndNote attachment paths under `<library>.Data/PDF`.
+- `get_reference`: return full metadata and attachment summaries for one
+  reference, including link-ready PDF attachment metadata for Codex Desktop.
+- `list_attachments`: resolve EndNote attachment paths under
+  `<library>.Data/PDF`, including `file://` URIs and Markdown links for the PDF
+  and containing folder.
 - `extract_pdf_text`: read an attached PDF on demand.
 
 All tools are read-only.

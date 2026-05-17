@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import sqlite3
 from dataclasses import dataclass
@@ -12,7 +13,9 @@ from urllib.parse import quote
 PLUGIN_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG_DIR = PLUGIN_ROOT / "config"
 LOCAL_CONFIG_PATH = DEFAULT_CONFIG_DIR / "libraries.local.json"
+USER_CONFIG_PATH = Path.home() / ".config" / "endnote-mcp" / "libraries.local.json"
 EXAMPLE_CONFIG_PATH = DEFAULT_CONFIG_DIR / "libraries.example.json"
+CONFIG_ENV_VAR = "ENDNOTE_MCP_CONFIG"
 
 DEFAULT_LIMIT = 20
 MAX_LIMIT = 100
@@ -118,11 +121,25 @@ class LibraryConfig:
 
 
 def load_config(config_path: Path | None = None) -> LibraryConfig:
-    path = config_path or (LOCAL_CONFIG_PATH if LOCAL_CONFIG_PATH.exists() else EXAMPLE_CONFIG_PATH)
+    if config_path is not None:
+        path = config_path
+    elif env_config := os.environ.get(CONFIG_ENV_VAR):
+        path = Path(env_config).expanduser()
+        if not path.exists():
+            raise EndNoteError(f"{CONFIG_ENV_VAR} points to missing config: {path}")
+    else:
+        path = next(
+            (
+                candidate
+                for candidate in (LOCAL_CONFIG_PATH, USER_CONFIG_PATH, EXAMPLE_CONFIG_PATH)
+                if candidate.exists()
+            ),
+            LOCAL_CONFIG_PATH,
+        )
     if not path.exists():
         raise EndNoteError(
-            f"No EndNote library config found. Create {LOCAL_CONFIG_PATH} from "
-            f"{EXAMPLE_CONFIG_PATH}."
+            f"No EndNote library config found. Create {USER_CONFIG_PATH} or "
+            f"{LOCAL_CONFIG_PATH} from {EXAMPLE_CONFIG_PATH}."
         )
 
     with path.open("r", encoding="utf-8") as handle:
@@ -345,6 +362,29 @@ def resolve_attachment_path(library: Library, raw_file_path: str) -> Path:
     return pdf_candidate
 
 
+def absolute_path(path: Path) -> Path:
+    expanded = path.expanduser()
+    if expanded.is_absolute():
+        return expanded
+    return expanded.absolute()
+
+
+def markdown_local_link(label: str, path: Path) -> str:
+    return f"[{label}](<{path}>)"
+
+
+def attachment_links(path: Path) -> dict[str, str]:
+    absolute = absolute_path(path)
+    parent = absolute.parent
+    return {
+        "file_uri": absolute.as_uri(),
+        "parent_path": str(parent),
+        "parent_uri": parent.as_uri(),
+        "markdown_link": markdown_local_link("Open PDF", absolute),
+        "markdown_parent_link": markdown_local_link("Show containing folder", parent),
+    }
+
+
 def format_attachment(library: Library, row: sqlite3.Row, index: int) -> dict[str, Any]:
     resolved = resolve_attachment_path(library, row["file_path"])
     return {
@@ -352,6 +392,7 @@ def format_attachment(library: Library, row: sqlite3.Row, index: int) -> dict[st
         "reference_id": int(row["refs_id"]),
         "file_path": row["file_path"],
         "resolved_path": str(resolved),
+        **attachment_links(resolved),
         "exists": resolved.exists(),
         "file_type": int(row["file_type"]),
         "file_pos": int(row["file_pos"]),
@@ -575,4 +616,3 @@ def extract_pdf_text(
         "max_chars": char_budget,
         "text": truncate(text, char_budget),
     }
-

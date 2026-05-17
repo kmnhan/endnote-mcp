@@ -26,6 +26,7 @@ plugins/endnote-local-adapter/config/libraries.local.json
 *.ENZ
 
 plugins/endnote-local-adapter/.venv/
+plugins/endnote-local-adapter/.uv-runtime/
 plugins/endnote-local-adapter/.pytest_cache/
 plugins/endnote-local-adapter/.ruff_cache/
 plugins/endnote-local-adapter/**/__pycache__/

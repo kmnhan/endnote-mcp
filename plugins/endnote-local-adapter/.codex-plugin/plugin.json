@@ -6,8 +6,8 @@
     "name": "kmnhan",
     "email": "khan@kaist.ac.kr"
   },
-  "homepage": "https://github.com/kmnhan/endnote-mcpe",
-  "repository": "https://github.com/kmnhan/endnote-mcpe",
+  "homepage": "https://github.com/kmnhan/endnote-mcp",
+  "repository": "https://github.com/kmnhan/endnote-mcp",
   "license": "MIT",
   "keywords": [
     "endnote",
@@ -27,7 +27,7 @@
       "Interactive",
       "Read"
     ],
-    "websiteURL": "https://github.com/kmnhan/endnote-mcpe",
+    "websiteURL": "https://github.com/kmnhan/endnote-mcp",
     "privacyPolicyURL": "https://example.com/privacy",
     "termsOfServiceURL": "https://example.com/terms",
     "defaultPrompt": [
