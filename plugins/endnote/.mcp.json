@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "endnote": {
+      "command": "uv",
+      "args": [
+        "run",
+        "endnote-mcp"
+      ],
+      "cwd": "."
+    }
+  }
+}

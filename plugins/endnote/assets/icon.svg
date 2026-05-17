@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Local library adapter">
+  <rect width="64" height="64" rx="14" fill="#0F766E"/>
+  <path d="M13 12h24l8 8v28H13z" fill="#FFFFFF"/>
+  <path d="M37 12v10h8" fill="#99F6E4"/>
+  <path d="M19 29h17M19 36h13M19 43h15" stroke="#134E4A" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="43" cy="43" r="7" fill="none" stroke="#FFFFFF" stroke-width="4"/>
+  <path d="M48 48l6 6" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+</svg>

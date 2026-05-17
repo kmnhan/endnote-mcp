@@ -1,0 +1,20 @@
+{
+  "name": "codex-local-citation-adapters",
+  "interface": {
+    "displayName": "Local Citation Adapters"
+  },
+  "plugins": [
+    {
+      "name": "endnote-local-adapter",
+      "source": {
+        "source": "local",
+        "path": "./plugins/endnote"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

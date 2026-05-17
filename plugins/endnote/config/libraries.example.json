@@ -1,0 +1,10 @@
+{
+  "defaultLibraryId": "research-projects",
+  "libraries": [
+    {
+      "id": "research-projects",
+      "name": "Research Projects",
+      "path": "/path/to/Research Projects.enl"
+    }
+  ]
+}

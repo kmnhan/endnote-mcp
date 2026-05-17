@@ -1,0 +1,32 @@
+# Local/private config
+*.local.json
+*.local.*
+plugins/endnote/config/libraries.local.json
+
+# EndNote user libraries, indexes, and attached content
+*.enl
+*.ENL
+*.enlp
+*.ENLP
+*.enlx
+*.ENLX
+*.eni
+*.ENI
+*.Data/
+*.DATA/
+*.pdf
+*.PDF
+
+# EndNote customization files are Clarivate-provided unless created independently.
+*.ens
+*.ENS
+*.enf
+*.ENF
+*.enz
+*.ENZ
+
+plugins/endnote/.venv/
+plugins/endnote/.pytest_cache/
+plugins/endnote/.ruff_cache/
+plugins/endnote/**/__pycache__/
+plugins/endnote/**/*.pyc
