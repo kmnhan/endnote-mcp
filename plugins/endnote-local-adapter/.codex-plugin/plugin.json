@@ -3,12 +3,11 @@
   "version": "0.1.0",
   "description": "Unofficial read-only adapter for local EndNote libraries, references, attachments, and indexed PDF text.",
   "author": {
-    "name": "Khan",
-    "email": "khan@example.com",
-    "url": "https://example.com"
+    "name": "kmnhan",
+    "email": "khan@kaist.ac.kr"
   },
-  "homepage": "https://example.com/codex-endnote",
-  "repository": "https://example.com/codex-endnote",
+  "homepage": "https://github.com/kmnhan/endnote-mcpe",
+  "repository": "https://github.com/kmnhan/endnote-mcpe",
   "license": "MIT",
   "keywords": [
     "endnote",
@@ -22,13 +21,13 @@
     "displayName": "MCP Adapter for EndNote (Unofficial)",
     "shortDescription": "Search a licensed local EndNote library",
     "longDescription": "Unofficial, unaffiliated read-only MCP adapter for user-configured local EndNote libraries. It searches citation metadata, inspects references and attachments, and queries an existing local PDF full-text index without modifying the library.",
-    "developerName": "Khan",
+    "developerName": "kmnhan",
     "category": "Productivity",
     "capabilities": [
       "Interactive",
       "Read"
     ],
-    "websiteURL": "https://example.com/codex-endnote",
+    "websiteURL": "https://github.com/kmnhan/endnote-mcpe",
     "privacyPolicyURL": "https://example.com/privacy",
     "termsOfServiceURL": "https://example.com/terms",
     "defaultPrompt": [

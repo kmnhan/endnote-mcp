@@ -28,6 +28,21 @@ Useful references:
 
 ## Installation for Codex users
 
+### Install from GitHub marketplace
+
+1. In Codex, open Plugins, then Add marketplace.
+2. Enter `https://github.com/kmnhan/endnote-mcp.git`.
+   Do not use the SSH shorthand `git@github.com:kmnhan/endnote-mcp`; Codex
+   fetches marketplaces non-interactively, so SSH host-key or key prompts can
+   make the add fail before the marketplace is read.
+3. Install or enable `MCP Adapter for EndNote (Unofficial)`.
+4. Install `uv` if it is not already available on your machine.
+5. Copy `config/libraries.example.json` to `config/libraries.local.json`.
+6. Edit `config/libraries.local.json` so each `path` points to a local `.enl`
+   library that you are authorized to access.
+
+### Install from a local checkout
+
 1. Clone this repository.
 2. Open the repository folder in Codex.
 3. Install `uv` if it is not already available on your machine.
