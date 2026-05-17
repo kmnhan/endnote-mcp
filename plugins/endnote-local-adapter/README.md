@@ -2,6 +2,8 @@
 
 Unofficial read-only MCP adapter for user-configured local EndNote libraries.
 
+## Legal and licensing notes
+
 This project is not affiliated with, endorsed by, sponsored by, or supported by
 Clarivate. EndNote is a trademark of Clarivate or its affiliates. This adapter
 is intended for use with a licensed local EndNote installation and libraries
@@ -24,11 +26,22 @@ Useful references:
 - [EndNote terms of use](https://endnote.com/terms-of-use/)
 - [EndNote APIs and plug-ins documentation](https://docs.endnote.com/docs/endnote/2025/v1/windows/en/content/appendices/apis_and_plug-ins.htm)
 
-## Setup
+## Installation for Codex users
 
-1. Install `uv` if it is not already available on your machine.
-2. Copy `config/libraries.example.json` to `config/libraries.local.json`.
-3. Edit `config/libraries.local.json` so each `path` points to a local `.enl` library.
+1. Clone this repository.
+2. Open the repository folder in Codex.
+3. Install `uv` if it is not already available on your machine.
+4. In Codex, install or enable `MCP Adapter for EndNote (Unofficial)` from the
+   local plugin marketplace. This repository declares it in
+   `.agents/plugins/marketplace.json`.
+5. Copy `config/libraries.example.json` to `config/libraries.local.json`.
+6. Edit `config/libraries.local.json` so each `path` points to a local `.enl`
+   library that you are authorized to access.
+
+For a home-local Codex install, copy this plugin directory to
+`~/plugins/endnote-local-adapter` and add a marketplace entry at
+`~/.agents/plugins/marketplace.json` whose `source.path` is
+`./plugins/endnote-local-adapter`.
 
 `libraries.local.json` is ignored by git so each user can keep their own
 absolute EndNote paths out of the repository.

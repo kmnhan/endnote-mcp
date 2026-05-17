@@ -8,7 +8,7 @@
       "name": "endnote-local-adapter",
       "source": {
         "source": "local",
-        "path": "./plugins/endnote"
+        "path": "./plugins/endnote-local-adapter"
       },
       "policy": {
         "installation": "AVAILABLE",
