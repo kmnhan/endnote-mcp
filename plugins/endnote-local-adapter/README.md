@@ -71,6 +71,10 @@ The adapter looks for configuration in this order:
 absolute EndNote paths out of the repository. Prefer the home config path for
 Codex plugin installs because plugin cache directories can be replaced.
 
+The plugin launches with `uv run --locked`, reusing its local `.venv` and
+checking the committed lockfile instead of creating a temporary environment
+for each launch.
+
 ## Tools
 
 - `list_libraries`: show configured libraries and whether their `.enl`, `.Data`, and PDF index paths exist.

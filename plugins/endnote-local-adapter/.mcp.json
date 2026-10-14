@@ -4,7 +4,7 @@
       "command": "uv",
       "args": [
         "run",
-        "--isolated",
+        "--locked",
         "endnote-mcp"
       ],
       "cwd": "."
