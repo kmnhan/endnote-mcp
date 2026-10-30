@@ -1,11 +1,9 @@
 {
   "mcpServers": {
     "endnote": {
-      "command": "uv",
+      "command": "sh",
       "args": [
-        "run",
-        "--locked",
-        "endnote-mcp"
+        "scripts/launch.sh"
       ],
       "cwd": "."
     }

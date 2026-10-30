@@ -197,6 +197,7 @@ name = "endnote-local-adapter"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "anyio" },
     { name = "mcp" },
     { name = "pypdf" },
 ]
@@ -208,7 +209,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "mcp", specifier = ">=1.13.0,<2" },
+    { name = "anyio", specifier = ">=4.5,<5" },
+    { name = "mcp", specifier = ">=1.27.1,<2" },
     { name = "pypdf", specifier = ">=6.0.0,<7" },
 ]
 

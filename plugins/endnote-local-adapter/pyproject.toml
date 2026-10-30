@@ -4,12 +4,13 @@ version = "0.1.0"
 description = "Unofficial read-only MCP adapter for local EndNote libraries."
 requires-python = ">=3.11"
 dependencies = [
-  "mcp>=1.13.0,<2",
+  "anyio>=4.5,<5",
+  "mcp>=1.27.1,<2",
   "pypdf>=6.0.0,<7",
 ]
 
 [project.scripts]
-endnote-mcp = "endnote_mcp.server:main"
+endnote-mcp = "endnote_mcp.shared:main"
 
 [dependency-groups]
 dev = [

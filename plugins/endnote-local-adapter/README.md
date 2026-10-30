@@ -71,9 +71,34 @@ The adapter looks for configuration in this order:
 absolute EndNote paths out of the repository. Prefer the home config path for
 Codex plugin installs because plugin cache directories can be replaced.
 
-The plugin launches with `uv run --locked`, reusing its local `.venv` and
-checking the committed lockfile instead of creating a temporary environment
-for each launch.
+### Shared local server
+
+On macOS and Linux, the plugin uses `scripts/launch.sh`. The launcher runs
+`uv sync --locked --no-dev` to check the plugin's `.venv`, then replaces itself
+with a small stdio client. No `uv` runner or package-cache lock remains while
+the connection is open.
+
+Clients from the same installation connect to one EndNote server over a private
+Unix socket. Each client has its own MCP session, including its own request IDs.
+Concurrent startup is protected by a lock. The socket directory is accessible
+only to your user account; the server does not listen on a network port.
+
+The server exits five minutes after its last client disconnects. The next client
+starts it again. A crashed server is also restarted on the next connection.
+Changes to the plugin code, dependency lockfile, Python environment, or
+`ENDNOTE_MCP_CONFIG` path select a separate server. Existing connections finish
+on their original server. Changes within the selected library config file are
+read on the next tool call.
+
+The app can still keep one small client process per connection. Only the shared
+server loads the MCP SDK and runs EndNote tools. Long file reads run outside the
+server's event loop so other clients can continue to send requests.
+
+After updating an existing installation, restart its MCP connections to replace
+old `uv run` processes. Those processes cannot be changed in place.
+
+For a standalone stdio server, including on Windows, use
+`uv run --locked python -m endnote_mcp.server` instead of the Unix launcher.
 
 ## Tools
 
@@ -95,3 +120,7 @@ All tools are read-only.
 uv run --group dev python -m pytest
 uv run python scripts/smoke_test.py
 ```
+
+The shared-server tests use temporary fixture configs and private sockets. They
+check concurrent startup, session isolation, disconnects, idle shutdown, and
+recovery after a server crash without reading your EndNote libraries.
